@@ -1,32 +1,28 @@
 class Solution {
-    public List<List<Integer>> threeSum(int[] arr) {
-
-        Arrays.sort(arr);
-        ArrayList<Integer>list=new  ArrayList<>();
-        List<List<Integer>>list2=new  ArrayList<>();
-        HashSet<List<Integer>>mpp=new HashSet<>();
-        int i=0;
-        int j=1;int k=arr.length-1;
-        while(i<j && j<k){   
-           while(j<k){
-            if(arr[i]+arr[j]+arr[k]==0)
-            {
-                 Collections.addAll(list,arr[i],arr[j],arr[k]);
-                 mpp.add(list);
-                 list=new  ArrayList<>();
-                j++;k--;
+    public List<List<Integer>> threeSum(int[] nums) {
+        HashSet<List<Integer>> listSet = new HashSet<>();
+        for (int i = 0; i < nums.length ; i++) {
+            HashSet<Integer> set = new HashSet<>();
+            for (int j = i + 1; j < nums.length; j++) {
+                int x = -(nums[i] + nums[j]);
+                // System.out.println(x);
+                if (set.contains(x)) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(x);
+                    Collections.sort(list);
+                    listSet.add(list);
+                }
+                set.add(nums[j]);
             }
-            else if(arr[i]+arr[j]+arr[k]>0)
-            k--;
-            else if(arr[i]+arr[j]+arr[k]<0)
-            j++;
-           }
-           i++;
-           j=i+1;k=arr.length-1;  
         }
-        for(List<Integer> ii:mpp){
-            list2.add(ii);
+        List<List<Integer>> ans = new ArrayList<>();
+        Iterator<List<Integer>> iterator = listSet.iterator();
+        while (iterator.hasNext()) {
+            List<Integer> list = iterator.next();
+            ans.add(list);
         }
-        return list2;
+return ans;
     }
 }
