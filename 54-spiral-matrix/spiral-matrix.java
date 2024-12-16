@@ -1,65 +1,46 @@
 class Solution {
-    enum Direction {
-        RIGHT, DOWN, LEFT, UP
-    }
-
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> ans = new ArrayList<>();
-        if (matrix == null || matrix.length == 0) {
-            return ans;
-        }
-
+        // Calculate the total number of rows and columns
         int rows = matrix.length;
         int cols = matrix[0].length;
-        int x = 0, y = 0;
-        boolean[][] visited = new boolean[rows][cols];
 
-        Direction direction = Direction.RIGHT;
-        int totalElements = rows * cols;
+        // Set up pointers to traverse the matrix
+        int row = 0;
+        int col = -1;
 
-        while (ans.size() < totalElements) {
-            ans.add(matrix[x][y]);
-            visited[x][y] = true;
+        // Set the initial direction to 1 for moving left to right
+        int direction = 1;
 
-            switch (direction) {
-                case RIGHT:
-                    if (y + 1 < cols && !visited[x][y + 1]) {
-                        y++;
-                    } else {
-                        direction = Direction.DOWN;
-                        x++;
-                    }
-                    break;
+        // Create an array to store the elements in spiral order
+        List<Integer> result = new ArrayList<>();
 
-                case DOWN:
-                    if (x + 1 < rows && !visited[x + 1][y]) {
-                        x++;
-                    } else {
-                        direction = Direction.LEFT;
-                        y--;
-                    }
-                    break;
+        // Traverse the matrix in a spiral order
+        while (rows > 0 && cols > 0) {
 
-                case LEFT:
-                    if (y - 1 >= 0 && !visited[x][y - 1]) {
-                        y--;
-                    } else {
-                        direction = Direction.UP;
-                        x--;
-                    }
-                    break;
-
-                case UP:
-                    if (x - 1 >= 0 && !visited[x - 1][y]) {
-                        x--;
-                    } else {
-                        direction = Direction.RIGHT;
-                        y++;
-                    }
-                    break;
-
+            // Move horizontally in one of two directions:
+            // 1. Left to right (if direction == 1)
+            // 2. Right to left (if direction == -1)
+            // Increment the col pointer to move horizontally
+            for (int i = 0; i < cols; i++) {
+                col += direction;
+                result.add(matrix[row][col]);
             }
+            rows--;
+
+            // Move vertically in one of two directions:
+            // 1. Top to bottom (if direction == 1)
+            // 2. Bottom to top (if direction == -1)
+            // Increment the row pointer to move vertically
+            for (int i = 0; i < rows; i++) {
+                row += direction;
+                result.add(matrix[row][col]);
+            }
+            cols--;
+
+            // Flip the direction for the next traversal
+            direction *= -1;
         }
-        return ans;
+
+        return result;
     }
 }
